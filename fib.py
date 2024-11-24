@@ -1,4 +1,3 @@
-
 def fib(n):
   global numCalls
   numCalls += 1
@@ -8,10 +7,11 @@ def fib(n):
   else:
     return fib(n-1) + fib(n-2)
 
-def fastFib(n, memo):
+#Dynamic programming example
+def fastFib(n, memo = {}):
   global numCalls
   numCalls += 1
-  print('Fib called with', n) 
+  print('Fib called with', n, memo) 
   if not n in memo:
     memo[n] = fastFib(n-1, memo) + fastFib(n-2, memo)  
   return memo[n]
@@ -26,6 +26,6 @@ def callFastFib(n):
 #print('Fib of', n, 'is', res, 'numCalls =', numCalls)
 
 numCalls = 0
-n = 6
+n = 5
 res = callFastFib(n)
 print('Fib of', n, 'is', res, 'numCalls =', numCalls)

@@ -1,6 +1,5 @@
-import random
+import numpy, random
 import matplotlib.pyplot as plt
-import numpy
 
 plt.plot([1, 2, 3, 4])
 plt.plot([5, 6, 7, 8])

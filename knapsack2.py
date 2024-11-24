@@ -1,5 +1,4 @@
 # Exponential growth / complexity
-
 def maxVal(w, v, i, availableWeight):
   print('maxVal called with:', i, availableWeight)
   global numCalls
@@ -13,12 +12,12 @@ def maxVal(w, v, i, availableWeight):
   without_i = maxVal(w, v, i-1, availableWeight)
   if w[i] > availableWeight:
       return without_i
-
 # right branch
   else:
     with_i = v[i] + maxVal(w, v, i-1, availableWeight - w[i])
   
   return max(with_i, without_i)
+
 
 # Dynamic programming by using mem to store calculations
 def fastMaxVal(w, v, i, aW, mem):
