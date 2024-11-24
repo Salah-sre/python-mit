@@ -1,4 +1,5 @@
-import math, pylab, random
+import math, random
+import matplotlib.pyplot as plt
 
 class Location(object):
   def __init__(self, x, y):
@@ -43,12 +44,32 @@ class Field(object):
 class Drunk(object):
   def __init__(self, name):
     self.name = name
-  def move(self, field, time = 1):
-    if field.getDrunk() != self:
+  def move(self, field, cp, dist = 1):
+    if field.getDrunk().name != self.name:
       raise ValueError('Drunk.move called with drunk not in field')
-    for i in range(time):
-      pt = CompassPt(random.choice(CompassPt.possibles))
-      field.move(pt, 1)
+    for i in range(dist):
+     # pt = CompassPt(random.choice(CompassPt.possibles))
+      field.move(cp, 1)
+
+class UsualDrunk(Drunk):
+  def move(self, field, dist= 1):
+    cp = random.choice(CompassPt.possibles)
+    Drunk.move(self, field, CompassPt(cp), dist)
+
+class ColdDrunk(Drunk):
+  def move(self, field, dist= 1):
+    cp = random.choice(CompassPt.possibles)
+    if cp == 'S':
+      Drunk.move(self, field, CompassPt(cp), 2*dist)
+    else:
+      Drunk.move(self, field, CompassPt(cp), dist)
+
+class EWDrunk(Drunk):
+  def move(self, field, time = 1):
+    cp = random.choice(CompassPt.possibles)
+    while cp != 'E' and cp != 'W':
+      cp = random.choice(CompassPt.possibles)
+    Drunk.move(self, field, CompassPt(cp), time)
 
 # One trial
 def performTrial(time, field):
@@ -62,30 +83,35 @@ def performTrial(time, field):
   return distances
 
 # Run multiple trials 
-def performSimulation(time, numTrials):
+def performSimulation(time, numTrials, drunkType):
   distLists = []
   for trial in range(numTrials):
-    d = Drunk('Drunk' + str(trial))
-    f = Field(d, Location(0, 0))
+    drunk = drunkType('Drunk' + str(trial))
+    f = Field(drunk, Location(0, 0))
     distances = performTrial(time, f)
     distLists.append(distances)
   return distLists
 
 # Answer original question
-def ansQuest(maxTime, numTrials):
+def ansQuest(maxTime, numTrials, drunkType, title):
   means = []
-  distLists = performSimulation(maxTime, numTrials)
+  distLists = performSimulation(maxTime, numTrials, drunkType)
   for t in range(maxTime + 1):
     tot = 0.0
     for distL in distLists:
       tot += distL[t]
     means.append(tot/len(distLists))
-  pylab.figure()
-  pylab.plot(means)
-  pylab.ylabel('distance')
-  pylab.xlabel('time')
-  pylab.title('Average Distance vs Time (' + str(len(distLists)) + ' trials)')
+  plt.figure()
+  plt.plot(means)
+  plt.ylabel('avg distance')
+  plt.xlabel('steps')
+  plt.title(title)
 
-ansQuest(500, 100)
-pylab.show()
+numSteps = 500
+numTrials = 100
+ansQuest(numSteps, numTrials, UsualDrunk, 'UsualDrunk ' + str(numTrials) + ' Trials')
+ansQuest(numSteps, numTrials, ColdDrunk, 'ColdDrunk ' + str(numTrials) + ' Trials')
+ansQuest(numSteps, numTrials, EWDrunk, 'EWDrunk ' + str(numTrials) + ' Trials')
+
+plt.show()
 
