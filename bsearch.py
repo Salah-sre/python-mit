@@ -1,4 +1,4 @@
-# O(log(n)) complexity
+# O(n) complexity
 def search(s, e):
   answer = None
   i = 0 
@@ -12,6 +12,7 @@ def search(s, e):
     i += 1
   print('Found: ' + str(answer) + ' using ' + str(numCompares) + ' iterations')
 
+# O(log(n)) complexity
 def bsearch(s, e, first, last):
   print('first element: ' + str(first))
   print('last element: ' + str(last))

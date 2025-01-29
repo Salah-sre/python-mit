@@ -1,3 +1,4 @@
+# Bubble/Insertion sort
 def bubbleSort(L):
   for j in range(len(L)):
     for i in range(len(L) - 1):
@@ -28,5 +29,7 @@ def testBubbleSort():
    print("-------- next test ------")
    test3 = [6, 5, 4, 3, 2, 1]
    bubbleSort2(test3)
-
+   print("-------- next test ------")
+   test4 = [10, 6, 9, 1, 2, 8, 5, 4]
+   bubbleSort2(test4)
 testBubbleSort()
